@@ -1,6 +1,7 @@
 // CSS
 import './App.css';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 // Pieces
 import Selectable from './pieces/Selectable';

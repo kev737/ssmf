@@ -2,7 +2,14 @@ import React, { Component, createContext } from 'react'
 import API from '../helpers/api'
 import { event } from '../types/event'
 
-export const EventsContext = createContext({events: [], postEvent: async (event:event) => {}, refresh: async () => {}})
+export const EventsContext = createContext(
+  {
+    events: [], 
+    postEvent: async (event:event) => {}, 
+    refresh: async () => {}, 
+    deletePost: async (id: number) => {}
+  }
+)
 
 interface eventsPayload {
   id: number, 
@@ -20,6 +27,7 @@ export class EventsProvider extends Component {
     super({})
 
     this.refresh = this.refresh.bind(this)
+    this.deletePost = this.deletePost.bind(this)
   }
   async componentDidMount(){
     await this.refresh()
@@ -37,7 +45,7 @@ export class EventsProvider extends Component {
     await API.get('/events/').then( 
       (reply) => {
         this.setState({
-          events: reply.data.map( (data : eventsPayload) => { return {start: new Date(data.start), end: new Date(data.end), title: data.title}}),
+          events: reply.data.map( (data : eventsPayload) => { return {start: new Date(data.start), end: new Date(data.end), title: data.title, id: data.id}}),
           isLoading: false
         })
       }
@@ -46,9 +54,16 @@ export class EventsProvider extends Component {
     })
   }
 
+  async deletePost(id: number){
+    await API.delete(`/events/${id}`).then(
+      async () => await this.refresh()
+    ).catch( () => window.alert('Something went wrong deleting that post. Please try again.')
+    )
+  }
+
   render() {
     return this.state.isLoading? <div>Loading...</div> : (
-      <EventsContext.Provider value={{...this.state, postEvent: this.postEvent, refresh: this.refresh}}>
+      <EventsContext.Provider value={{...this.state, postEvent: this.postEvent, refresh: this.refresh, deletePost: this.deletePost}}>
         {this.props.children}
       </EventsContext.Provider>
     )

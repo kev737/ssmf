@@ -4,22 +4,33 @@ import moment from 'moment'
 import { EventsContext } from '../contexts/events'
 import { event } from '../types/event'
 import history from '../helpers/history'
+import { Button, Modal } from 'react-bootstrap'
 
 const propTypes = {}
 const localizer = momentLocalizer(moment)
 
-class Selectable extends React.Component< {}, {events: Array<event>}> {
+class Selectable extends React.Component< {}, {events: Array<event>, show: boolean, selectedEvent: event}> {
   constructor() {
     super({})
 
-    this.state = { events : [] }
+    this.state = { events : [], show: false, selectedEvent: {start: new Date(0), end: new Date(0), title: ''}}
+    this.closeModal = this.closeModal.bind(this)
+  }
+
+  closeModal(){
+    this.setState({...this.state, show: false})
   }
 
   render() {
     return (
       <EventsContext.Consumer>{ (eventsContext) =>
         {
-          const {events, postEvent, refresh} = eventsContext
+          const {events, postEvent, refresh, deletePost} = eventsContext
+
+          const completeDelete = (id: number) => {
+            deletePost(id)
+            this.closeModal()
+          }
           const select = ({ start, end } : {start : Date, end: Date}) => {
             const title = window.prompt('New Event name')
             if (title){
@@ -36,6 +47,21 @@ class Selectable extends React.Component< {}, {events: Array<event>}> {
           }
 
           return(
+            <> 
+            <Modal show={this.state.show} onHide={this.closeModal}>
+              <Modal.Header closeButton>
+                <Modal.Title>Information about Event</Modal.Title>
+              </Modal.Header>
+              <Modal.Body>{`Event title: ${this.state.selectedEvent.title}`}</Modal.Body>
+              <Modal.Footer>
+                <Button variant="secondary" onClick={this.closeModal}>
+                  Cancel
+                </Button>
+                <Button variant="primary" onClick={() => completeDelete(this.state.selectedEvent.id || -1)}>
+                  Delete Event
+                </Button>
+              </Modal.Footer>
+            </Modal>
             <Calendar
               selectable
               localizer={localizer}
@@ -43,7 +69,7 @@ class Selectable extends React.Component< {}, {events: Array<event>}> {
               defaultView={'week'}
               scrollToTime={new Date()}
               defaultDate={new Date()}
-              onSelectEvent={(data: event) => alert(data.title)}
+              onSelectEvent={(data: event) => this.setState({...this.state, show: true, selectedEvent: data})}
               style={{height: '737px'}}
               onSelectSlot={(data) => {
                 if(typeof(data.start) === 'string' || typeof(data.end) === 'string'){
@@ -56,6 +82,7 @@ class Selectable extends React.Component< {}, {events: Array<event>}> {
                 
               }}
             />
+            </>
           )
         }
       }
