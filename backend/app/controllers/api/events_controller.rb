@@ -1,4 +1,5 @@
-class EventsController < ApplicationController
+module Api
+  class EventsController < ApplicationController
   before_action :set_event, only: [:show, :update, :destroy]
 
   # GET /events
@@ -48,4 +49,5 @@ class EventsController < ApplicationController
     def event_params
       params.require(:event).permit(:start, :end, :title, :description)
     end
+  end
 end
