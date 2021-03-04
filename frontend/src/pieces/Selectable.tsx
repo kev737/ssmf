@@ -4,7 +4,7 @@ import moment from 'moment'
 import { EventsContext } from '../contexts/events'
 import { event } from '../types/event'
 import history from '../helpers/history'
-import { Button, Modal } from 'react-bootstrap'
+import { Breadcrumb, Button, Modal } from 'react-bootstrap'
 
 const propTypes = {}
 const localizer = momentLocalizer(moment)
@@ -48,6 +48,7 @@ class Selectable extends React.Component< {}, {events: Array<event>, show: boole
 
           return(
             <> 
+            <Breadcrumb />
             <Modal show={this.state.show} onHide={this.closeModal}>
               <Modal.Header closeButton>
                 <Modal.Title>Information about Event</Modal.Title>
