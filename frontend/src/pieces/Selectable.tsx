@@ -4,7 +4,7 @@ import moment from 'moment'
 import { EventsContext } from '../contexts/events'
 import { event } from '../types/event'
 import history from '../helpers/history'
-import { Breadcrumb, Button, Modal, Row } from 'react-bootstrap'
+import { Breadcrumb, Button, Container, Modal, Row } from 'react-bootstrap'
 
 const propTypes = {}
 const localizer = momentLocalizer(moment)
@@ -59,6 +59,7 @@ class Selectable extends React.Component< {}, {events: Array<event>, show: boole
                 </Button>
               </Modal.Footer>
             </Modal>
+            <Container fluid>
             <Row>
               <Breadcrumb>
               <Breadcrumb.Item href='https://www.savesanmarcosfoothills.org/'>Back to SSMF Info</Breadcrumb.Item>
@@ -86,6 +87,7 @@ class Selectable extends React.Component< {}, {events: Array<event>, show: boole
                 }}
               />
             </Row>
+            </Container>
             </>
           )
         }
