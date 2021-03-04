@@ -4,7 +4,7 @@ import moment from 'moment'
 import { EventsContext } from '../contexts/events'
 import { event } from '../types/event'
 import history from '../helpers/history'
-import { Button, Modal } from 'react-bootstrap'
+import { Breadcrumb, Button, Modal, Row } from 'react-bootstrap'
 
 const propTypes = {}
 const localizer = momentLocalizer(moment)
@@ -59,26 +59,33 @@ class Selectable extends React.Component< {}, {events: Array<event>, show: boole
                 </Button>
               </Modal.Footer>
             </Modal>
-            <Calendar
-              selectable
-              localizer={localizer}
-              events={events || this.state.events}
-              defaultView={'week'}
-              scrollToTime={new Date()}
-              defaultDate={new Date()}
-              onSelectEvent={(data: event) => this.setState({...this.state, show: true, selectedEvent: data})}
-              style={{height: '737px'}}
-              onSelectSlot={(data) => {
-                if(typeof(data.start) === 'string' || typeof(data.end) === 'string'){
-                  window.alert('Something went wrong in Calendar')
-                  return
-                }
-                else{
-                  select({start: data.start, end: data.end})
-                }
-                
-              }}
-            />
+            <Row>
+              <Breadcrumb>
+              <Breadcrumb.Item href='https://www.savesanmarcosfoothills.org/'>Back to SSMF Info</Breadcrumb.Item>
+              </Breadcrumb>
+            </Row>
+            <Row>
+              <Calendar
+                selectable
+                localizer={localizer}
+                events={events || this.state.events}
+                defaultView={'week'}
+                scrollToTime={new Date()}
+                defaultDate={new Date()}
+                onSelectEvent={(data: event) => this.setState({...this.state, show: true, selectedEvent: data})}
+                style={{height: '737px'}}
+                onSelectSlot={(data) => {
+                  if(typeof(data.start) === 'string' || typeof(data.end) === 'string'){
+                    window.alert('Something went wrong in Calendar')
+                    return
+                  }
+                  else{
+                    select({start: data.start, end: data.end})
+                  }
+                  
+                }}
+              />
+            </Row>
             </>
           )
         }
