@@ -74,7 +74,7 @@ class Selectable extends React.Component< {}, {events: Array<event>, show: boole
                 scrollToTime={new Date()}
                 defaultDate={new Date()}
                 onSelectEvent={(data: event) => this.setState({...this.state, show: true, selectedEvent: data})}
-                style={{height: '737px', width: '100%'}}
+                style={{height: '737px', width: '100%', marginLeft: '25'}}
                 onSelectSlot={(data) => {
                   if(typeof(data.start) === 'string' || typeof(data.end) === 'string'){
                     window.alert('Something went wrong in Calendar')
