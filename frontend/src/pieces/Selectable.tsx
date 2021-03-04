@@ -41,9 +41,6 @@ class Selectable extends React.Component< {}, {events: Array<event>, show: boole
                 window.alert('Something went wrong. Please try again.')
               })
             }
-            else{
-              window.alert('Please try again with a title')
-            }
           }
 
           return(
